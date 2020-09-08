@@ -9,3 +9,13 @@ RUN cd /root && \
 	./configure && \
 	make && \
 	make install
+
+RUN adduser --disabled-password --gecos '' admin
+
+RUN echo "admin ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/admin && chmod 0440 /etc/sudoers.d/admin
+
+USER admin:admin
+
+RUN mkdir /home/admin/workspace
+
+WORKDIR /home/admin/workspace
