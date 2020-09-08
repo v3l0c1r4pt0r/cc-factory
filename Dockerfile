@@ -1,6 +1,12 @@
 FROM ubuntu:12.04
 
-RUN apt-get update && apt-get upgrade -yq && apt-get install -yq gcc
+RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
+	# for admin access of normal user
+	sudo \
+	# for ct-ng
+	gcc g++ gperf bison flex texinfo help2man make libncurses5-dev \
+	python3-dev autoconf automake libtool gawk wget bzip2 xz-utils unzip \
+	patch libstdc++6 rsync
 
 RUN cd /root && \
 	wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.22.0.tar.xz && \
