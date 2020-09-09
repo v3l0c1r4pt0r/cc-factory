@@ -5,7 +5,7 @@ all:
 	echo "Do sth else. Plz"
 
 build:
-	#docker rmi -f $(IMAGE):$(IMAGE_VERSION) # do we need it?
+	docker rmi -f $(IMAGE):$(IMAGE_VERSION)
 	docker build --tag $(IMAGE):$(IMAGE_VERSION) .
 
 run:
