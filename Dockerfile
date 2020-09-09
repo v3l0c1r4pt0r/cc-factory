@@ -7,7 +7,9 @@ RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
 	# for ct-ng
 	gcc g++ gperf bison flex texinfo help2man make libncurses5-dev \
 	python3-dev autoconf automake libtool gawk wget bzip2 xz-utils unzip \
-	patch libstdc++6 rsync
+	patch libstdc++6 rsync \
+	# for ct-ng pulling via wget
+	ca-certificates
 
 # add unprivileged user and set up workspace
 RUN adduser --disabled-password --gecos '' admin
