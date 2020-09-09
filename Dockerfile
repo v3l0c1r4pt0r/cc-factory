@@ -27,3 +27,10 @@ RUN wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.22.0.tar.x
 	./configure && \
 	make && \
 	sudo make install
+
+# install crostool-ng configuration
+RUN mkdir /home/admin/x-tools
+
+COPY ./ct-ng.config /home/admin/x-tools/.config
+
+RUN cd /home/admin/x-tools && ct-ng oldconfig
