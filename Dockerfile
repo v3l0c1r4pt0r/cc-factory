@@ -9,15 +9,6 @@ RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
 	python3-dev autoconf automake libtool gawk wget bzip2 xz-utils unzip \
 	patch libstdc++6 rsync
 
-# build and install crosstool-ng
-RUN cd /root && \
-	wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.22.0.tar.xz && \
-	tar -xvf crosstool-ng-1.22.0.tar.xz && \
-	cd crosstool-ng && \
-	./configure && \
-	make && \
-	make install
-
 # add unprivileged user and set up workspace
 RUN adduser --disabled-password --gecos '' admin
 
@@ -28,3 +19,11 @@ USER admin:admin
 RUN mkdir /home/admin/workspace
 
 WORKDIR /home/admin/workspace
+
+# build and install crosstool-ng
+RUN wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.22.0.tar.xz && \
+	tar -xvf crosstool-ng-1.22.0.tar.xz && \
+	cd crosstool-ng && \
+	./configure && \
+	make && \
+	sudo make install
