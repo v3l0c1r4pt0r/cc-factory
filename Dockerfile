@@ -18,7 +18,9 @@ USER admin:admin
 
 RUN mkdir /home/admin/workspace
 
-WORKDIR /home/admin/workspace
+RUN mkdir /home/admin/x-tools
+
+WORKDIR /home/admin/x-tools
 
 # build and install crosstool-ng
 RUN wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.22.0.tar.xz && \
@@ -29,8 +31,8 @@ RUN wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.22.0.tar.x
 	sudo make install
 
 # install crostool-ng configuration
-RUN mkdir /home/admin/x-tools
-
 COPY ./ct-ng.config /home/admin/x-tools/.config
 
-RUN cd /home/admin/x-tools && ct-ng oldconfig
+RUN ct-ng oldconfig
+
+WORKDIR /home/admin/workspace
