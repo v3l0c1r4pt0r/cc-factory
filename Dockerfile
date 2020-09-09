@@ -29,6 +29,8 @@ RUN wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.22.0.tar.x
 	tar -xvf crosstool-ng-1.22.0.tar.xz && \
 	cd crosstool-ng && \
 	./configure && \
+	sed -i 's/http:\/\/www.multiprecision.org\/mpc\/download/http:\/\/www.multiprecision.org\/downloads/g' \
+		./scripts/build/companion_libs/140-mpc.sh && \
 	make && \
 	sudo make install
 
