@@ -22,15 +22,17 @@ RUN mkdir /home/admin/workspace
 
 RUN mkdir /home/admin/x-tools
 
-WORKDIR /home/admin/x-tools
-
 # build and install crosstool-ng
+WORKDIR /home/admin/workspace
+
 RUN wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.22.0.tar.xz && \
 	tar -xvf crosstool-ng-1.22.0.tar.xz && \
 	cd crosstool-ng && \
 	./configure && \
 	make && \
 	sudo make install
+
+WORKDIR /home/admin/x-tools
 
 # install crostool-ng configuration
 COPY ./ct-ng.config /home/admin/x-tools/.config
