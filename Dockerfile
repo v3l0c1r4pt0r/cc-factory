@@ -65,7 +65,7 @@ RUN cd gcc-${GCC_VER} && \
   cd ..
 
 # Step 1. Build binutils
-RUN tput -Txterm setaf 2; echo "Building sources..."; tput -Txterm setaf 7;
+RUN tput -Txterm setaf 2; echo "[1/10] Building binutils..."; tput -Txterm setaf 7;
 RUN mkdir build-binutils && \
   cd build-binutils && \
   ../binutils-${BINUTILS_VER}/configure --prefix=/usr/local --target=${TARGET} --disable-multilib && \
@@ -73,6 +73,14 @@ RUN mkdir build-binutils && \
   sudo make install
 
 # Step 2. Prepare kernel headers
-RUN tput -Txterm setaf 2; echo "Installing kernel headers..."; tput -Txterm setaf 7;
+RUN tput -Txterm setaf 2; echo "[2/10] Installing kernel headers..."; tput -Txterm setaf 7;
 RUN cd linux-${LINUX_VER} && \
 	sudo make ARCH=${ARCH} INSTALL_HDR_PATH=/usr/${TARGET} headers_install
+
+# Step 3. First pass compiler
+RUN tput -Txterm setaf 2; echo "Building first pass of GCC..."; tput -Txterm setaf 7;
+RUN mkdir -p build-gcc && \
+  cd build-gcc && \
+  ../gcc-${GCC_VER}/configure --prefix=/usr/local --target=${TARGET} --enable-languages=c,c++ --disable-multilib && \
+  make -j${JOBS} all-gcc && \
+  sudo make install-gcc
