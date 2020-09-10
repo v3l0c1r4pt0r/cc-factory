@@ -71,3 +71,8 @@ RUN mkdir build-binutils && \
   ../binutils-${BINUTILS_VER}/configure --prefix=/usr/local --target=${TARGET} --disable-multilib && \
   make -j${JOBS} && \
   sudo make install
+
+# Step 2. Prepare kernel headers
+RUN tput -Txterm setaf 2; echo "Installing kernel headers..."; tput -Txterm setaf 7;
+RUN cd linux-${LINUX_VER} && \
+	sudo make ARCH=${ARCH} INSTALL_HDR_PATH=/usr/${TARGET} headers_install
