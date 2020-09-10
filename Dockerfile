@@ -1,3 +1,4 @@
+ARG JOBS=1
 FROM ubuntu:12.04
 
 # prepare system and prerequisites
@@ -5,7 +6,7 @@ RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
 	# for admin access of normal user
 	sudo \
   # for toolchain cross-compilation
-  gcc g++ make gawk \
+  gcc g++ make gawk texinfo \
 	# for pulling sources
 	wget ca-certificates
 
@@ -21,6 +22,8 @@ RUN mkdir /home/admin/workspace
 WORKDIR /home/admin/workspace
 
 # setup component versions
+ENV ARCH mips
+ENV TARGET mipsel-unknown-linux-gnu
 ENV BINUTILS_VER 2.23.2
 ENV GCC_VER 4.6.4
 ENV LINUX_BRANCH v3.x
@@ -50,3 +53,21 @@ RUN if [ "z${CLOOG_VER}" != "z" ]; then echo "CLooG is not supported yet!"; exit
 # extract sources
 RUN tput -Txterm setaf 6; echo "Extracting sources..."; tput -Txterm setaf 7;
 RUN for f in *.tar*; do echo "$f...";tar -xf $f; echo "done"; done
+
+# prepare sources for compilation
+RUN tput -Txterm setaf 6; echo "Preparing sources..."; tput -Txterm setaf 7;
+RUN cd gcc-${GCC_VER} && \
+  ln -s ../gmp-${GMP_VER} gmp && \
+  ln -s ../mpfr-${MPFR_VER} mpfr && \
+  ln -s ../mpc-${MPC_VER} mpc && \
+  #if [ "z${ISL_VER}" != "z" ]; then ln -s ../isl-${ISL_VER} isl; fi \
+  #if [ "z${CLOOG_VER}" != "z" ]; then ln -s ../cloog-${CLOOG_VER} cloog; fi \
+  cd ..
+
+# Step 1. Build binutils
+RUN tput -Txterm setaf 2; echo "Building sources..."; tput -Txterm setaf 7;
+RUN mkdir build-binutils && \
+  cd build-binutils && \
+  ../binutils-${BINUTILS_VER}/configure --prefix=/usr/local --target=${TARGET} --disable-multilib && \
+  make -j${JOBS} && \
+  sudo make install
