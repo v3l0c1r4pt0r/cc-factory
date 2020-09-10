@@ -4,12 +4,10 @@ FROM ubuntu:12.04
 RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
 	# for admin access of normal user
 	sudo \
-	# for ct-ng
-	gcc g++ gperf bison flex texinfo help2man make libncurses5-dev \
-	python3-dev autoconf automake libtool gawk wget bzip2 xz-utils unzip \
-	patch libstdc++6 rsync \
-	# for ct-ng pulling via wget
-	ca-certificates
+  # for toolchain cross-compilation
+  gcc g++ make gawk \
+	# for pulling sources
+	wget ca-certificates
 
 # add unprivileged user and set up workspace
 RUN adduser --disabled-password --gecos '' admin
@@ -20,25 +18,35 @@ USER admin:admin
 
 RUN mkdir /home/admin/workspace
 
-RUN mkdir /home/admin/x-tools
-
-# build and install crosstool-ng
 WORKDIR /home/admin/workspace
 
-RUN wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.22.0.tar.xz && \
-	tar -xvf crosstool-ng-1.22.0.tar.xz && \
-	cd crosstool-ng && \
-	./configure && \
-	sed -i 's/http:\/\/www.multiprecision.org\/mpc\/download/http:\/\/www.multiprecision.org\/downloads/g' \
-		./scripts/build/companion_libs/140-mpc.sh && \
-	make && \
-	sudo make install
+# setup component versions
+ENV BINUTILS_VER 2.23.2
+ENV GCC_VER 4.6.4
+ENV LINUX_BRANCH v3.x
+ENV LINUX_VER 3.4.113
+ENV LIBC "uClibc-ng"
+#ENV LIBC "glibc"
+ENV LIBC_VER 1.0.26
+ENV GMP_VER 4.3.0
+ENV MPFR_VER 3.1.0
+ENV MPC_VER 0.8.1
+ENV ISL_VER ""
+ENV CLOOG_VER ""
 
-WORKDIR /home/admin/x-tools
+# pull sources
+RUN echo "Downloading sources..."
+RUN wget http://ftpmirror.gnu.org/binutils/binutils-${BINUTILS_VER}.tar.gz
+RUN wget http://ftpmirror.gnu.org/gcc/gcc-${GCC_VER}/gcc-${GCC_VER}.tar.gz
+RUN wget https://www.kernel.org/pub/linux/kernel/${LINUX_BRANCH}/linux-${LINUX_VER}.tar.xz
+RUN if [ "${LIBC}" == "glibc" ]; then wget http://ftpmirror.gnu.org/glibc/glibc-${LIBC_VER}.tar.xz; fi
+RUN if [ "${LIBC}" == "uClibc-ng" ]; then https://downloads.uclibc-ng.org/releases/${LIBC_VER}/uClibc-ng-${LIBC_VER}.tar.gz; fi
+RUN wget http://ftpmirror.gnu.org/gmp/gmp-${GMP_VER}.tar.gz
+RUN wget http://ftpmirror.gnu.org/mpfr/mpfr-${MPFR_VER}.tar.gz
+RUN wget http://www.multiprecision.org/downloads/mpc-${MPC_VER}.tar.gz
+RUN if [ "z${ISL_VER}" != "z" ]; then echo "ISL is not supported yet!"; exit 1; fi
+RUN if [ "z${CLOOG_VER}" != "z" ]; then echo "CLooG is not supported yet!"; exit 1; fi
 
-# install crostool-ng configuration
-COPY ./ct-ng.config /home/admin/x-tools/.config
-
-RUN ct-ng oldconfig
-
-WORKDIR /home/admin/workspace
+# extract sources
+RUN echo "Extracting sources...";
+RUN for f in *.tar*; do tar -xvf $f; done
