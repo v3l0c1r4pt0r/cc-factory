@@ -35,7 +35,7 @@ ENV ISL_VER ""
 ENV CLOOG_VER ""
 
 # pull sources
-RUN echo "Downloading sources..."
+RUN tput -Txterm setaf 6; echo "Downloading sources..."; tput -Txterm setaf 7;
 RUN wget http://ftpmirror.gnu.org/binutils/binutils-${BINUTILS_VER}.tar.gz
 RUN wget http://ftpmirror.gnu.org/gcc/gcc-${GCC_VER}/gcc-${GCC_VER}.tar.gz
 RUN wget https://www.kernel.org/pub/linux/kernel/${LINUX_BRANCH}/linux-${LINUX_VER}.tar.xz
@@ -48,5 +48,5 @@ RUN if [ "z${ISL_VER}" != "z" ]; then echo "ISL is not supported yet!"; exit 1; 
 RUN if [ "z${CLOOG_VER}" != "z" ]; then echo "CLooG is not supported yet!"; exit 1; fi
 
 # extract sources
-RUN echo "Extracting sources...";
-RUN for f in *.tar*; do tar -xvf $f; done
+RUN tput -Txterm setaf 6; echo "Extracting sources..."; tput -Txterm setaf 7;
+RUN for f in *.tar*; do echo "$f...";tar -xf $f; echo "done"; done
