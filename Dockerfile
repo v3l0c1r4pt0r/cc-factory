@@ -74,7 +74,16 @@ RUN mkdir -p build-gmp && \
 	cd build-gmp && \
 	../gmp-${GMP_VER}/configure --prefix=`pwd`/../install-gmp && \
 	make -j${JOBS} && \
-	sudo make install --dry-run
+	make install
+
+# Step 4. Build MPFR
+RUN tput -Txterm setaf 2; echo "[4/10] Building MPFR..."; tput -Txterm setaf 7;
+RUN mkdir -p build-mpfr && \
+	mkdir -p install-mpfr && \
+	cd build-mpfr && \
+	../mpfr-${MPFR_VER}/configure --prefix=`pwd`/../install-mpfr --with-gmp=`pwd`/../install-gmp && \
+	make -j${JOBS} && \
+	make install
 
 # Step 3. First pass compiler
 RUN tput -Txterm setaf 2; echo "Building first pass of GCC..."; tput -Txterm setaf 7;
