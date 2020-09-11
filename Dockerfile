@@ -54,16 +54,6 @@ RUN if [ "z${CLOOG_VER}" != "z" ]; then echo "CLooG is not supported yet!"; exit
 RUN tput -Txterm setaf 6; echo "Extracting sources..."; tput -Txterm setaf 7;
 RUN for f in *.tar*; do echo "$f...";tar -xf $f; echo "done"; done
 
-# prepare sources for compilation
-RUN tput -Txterm setaf 6; echo "Preparing sources..."; tput -Txterm setaf 7;
-RUN cd gcc-${GCC_VER} && \
-  ln -s ../gmp-${GMP_VER} gmp && \
-  ln -s ../mpfr-${MPFR_VER} mpfr && \
-  ln -s ../mpc-${MPC_VER} mpc && \
-  #if [ "z${ISL_VER}" != "z" ]; then ln -s ../isl-${ISL_VER} isl; fi \
-  #if [ "z${CLOOG_VER}" != "z" ]; then ln -s ../cloog-${CLOOG_VER} cloog; fi \
-  cd ..
-
 # Step 1. Build binutils
 RUN tput -Txterm setaf 2; echo "[1/10] Building binutils..."; tput -Txterm setaf 7;
 RUN mkdir build-binutils && \
@@ -76,6 +66,15 @@ RUN mkdir build-binutils && \
 RUN tput -Txterm setaf 2; echo "[2/10] Installing kernel headers..."; tput -Txterm setaf 7;
 RUN cd linux-${LINUX_VER} && \
 	sudo make ARCH=${ARCH} INSTALL_HDR_PATH=/usr/${TARGET} headers_install
+
+# Step 3. Build GMP
+RUN tput -Txterm setaf 2; echo "[3/10] Building GMP..."; tput -Txterm setaf 7;
+RUN mkdir -p build-gmp && \
+	mkdir -p install-gmp && \
+	cd build-gmp && \
+	../gmp-${GMP_VER}/configure --prefix=`pwd`/../install-gmp && \
+	make -j${JOBS} && \
+	sudo make install --dry-run
 
 # Step 3. First pass compiler
 RUN tput -Txterm setaf 2; echo "Building first pass of GCC..."; tput -Txterm setaf 7;
