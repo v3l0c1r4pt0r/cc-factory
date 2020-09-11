@@ -6,7 +6,7 @@ RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
 	# for admin access of normal user
 	sudo \
   # for toolchain cross-compilation
-  gcc g++ make gawk texinfo file m4 \
+  gcc g++ make gawk texinfo file m4 patch \
 	# for pulling sources
 	wget ca-certificates
 
@@ -85,10 +85,26 @@ RUN mkdir -p build-mpfr && \
 	make -j${JOBS} && \
 	make install
 
+# Step 5. Build MPC
+RUN tput -Txterm setaf 2; echo "[5/10] Building MPC..."; tput -Txterm setaf 7;
+COPY gmp_rnda.patch /home/admin/workspace
+RUN mkdir -p build-mpc && \
+	mkdir -p install-mpc && \
+	cd mpc-${MPC_VER} && \
+	patch -p1 <../gmp_rnda.patch && \
+	cd - && \
+	cd build-mpc && \
+	../mpc-${MPC_VER}/configure \
+		--prefix=`pwd`/../install-mpc \
+		--with-gmp=`pwd`/../install-gmp \
+		--with-mpfr=`pwd`/../install-mpfr && \
+	make -j${JOBS} && \
+	make install
+
 # Step 3. First pass compiler
-RUN tput -Txterm setaf 2; echo "Building first pass of GCC..."; tput -Txterm setaf 7;
-RUN mkdir -p build-gcc && \
-  cd build-gcc && \
-  ../gcc-${GCC_VER}/configure --prefix=/usr/local --target=${TARGET} --enable-languages=c,c++ --disable-multilib && \
-  make -j${JOBS} all-gcc && \
-  sudo make install-gcc
+#RUN tput -Txterm setaf 2; echo "[3/7] Building first pass of GCC..."; tput -Txterm setaf 7;
+#RUN mkdir -p build-gcc && \
+#  cd build-gcc && \
+#  ../gcc-${GCC_VER}/configure --prefix=/usr/local --target=${TARGET} --enable-languages=c,c++ --disable-multilib && \
+#  make -j${JOBS} all-gcc && \
+#  sudo make install-gcc

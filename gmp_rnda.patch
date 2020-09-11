@@ -1,0 +1,11 @@
+--- a/src/acos.c      2020-09-11 07:18:41.714033605 +0000
++++ b/src/acos.c  2020-09-11 07:19:18.045601345 +0000
+@@ -189,7 +189,7 @@
+     rnd_im = rnd_im == GMP_RNDU ? GMP_RNDD
+       : rnd_im == GMP_RNDD ? GMP_RNDU
+ #if MPFR_VERSION_MAJOR >= 3
+-      : rnd_im == GMP_RNDA ? GMP_RNDZ
++      : rnd_im == MPFR_RNDA ? GMP_RNDZ
+ #endif
+       : rnd_im;
+   rnd1 = RNDC(GMP_RNDN, rnd_im);
