@@ -57,8 +57,9 @@ RUN for f in *.tar*; do echo "$f...";tar -xf $f; echo "done"; done
 # Step 1. Build binutils
 RUN tput -Txterm setaf 2; echo "[1/10] Building binutils..."; tput -Txterm setaf 7;
 RUN mkdir build-binutils && \
+	mkdir -p install-binutils && \
   cd build-binutils && \
-  ../binutils-${BINUTILS_VER}/configure --prefix=/usr/local --target=${TARGET} --disable-multilib && \
+  ../binutils-${BINUTILS_VER}/configure --prefix=`pwd`/../install-binutils --target=${TARGET} --disable-multilib && \
   make -j${JOBS} && \
   sudo make install
 
