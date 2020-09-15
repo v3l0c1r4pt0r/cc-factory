@@ -42,8 +42,8 @@ RUN tput -Txterm setaf 6; echo "Downloading sources..."; tput -Txterm setaf 7;
 RUN wget http://ftpmirror.gnu.org/binutils/binutils-${BINUTILS_VER}.tar.gz
 RUN wget http://ftpmirror.gnu.org/gcc/gcc-${GCC_VER}/gcc-${GCC_VER}.tar.gz
 RUN wget https://www.kernel.org/pub/linux/kernel/${LINUX_BRANCH}/linux-${LINUX_VER}.tar.xz
-RUN if [ "${LIBC}" == "glibc" ]; then wget http://ftpmirror.gnu.org/glibc/glibc-${LIBC_VER}.tar.xz; fi
-RUN if [ "${LIBC}" == "uClibc-ng" ]; then https://downloads.uclibc-ng.org/releases/${LIBC_VER}/uClibc-ng-${LIBC_VER}.tar.gz; fi
+RUN bash -c "if [ \"z${LIBC}\" == \"zglibc\" ]; then wget http://ftpmirror.gnu.org/glibc/glibc-${LIBC_VER}.tar.xz; fi"
+RUN bash -c "if [ \"z${LIBC}\" == \"zuClibc-ng\" ]; then wget https://downloads.uclibc-ng.org/releases/${LIBC_VER}/uClibc-ng-${LIBC_VER}.tar.gz; fi"
 RUN wget http://ftpmirror.gnu.org/gmp/gmp-${GMP_VER}.tar.gz
 RUN wget http://ftpmirror.gnu.org/mpfr/mpfr-${MPFR_VER}.tar.gz
 RUN wget http://www.multiprecision.org/downloads/mpc-${MPC_VER}.tar.gz
@@ -115,6 +115,5 @@ RUN mkdir -p build-gcc && \
     --with-mpc=`pwd`/../install-mpc \
     --enable-languages=c,c++ \
     --disable-multilib && \
-  make all-gcc && \
-  #make -j${JOBS} all-gcc && \
+  make -j${JOBS} all-gcc && \
   sudo make install-gcc
