@@ -126,3 +126,6 @@ RUN sed -i 's/KERNEL_HEADERS=""/KERNEL_HEADERS="\/home\/admin\/workspace\/instal
 RUN cd uClibc-ng-${LIBC_VER} && \
   PATH=~/workspace/install-sdk/bin:$PATH LD_LIBRARY_PATH=~/workspace/install-sdk/lib make pregen startfiles CROSS_COMPILE=$TARGET- && \
   PATH=~/workspace/install-sdk/bin:$PATH LD_LIBRARY_PATH=~/workspace/install-sdk/lib make install_headers install_startfiles CROSS_COMPILE=$TARGET- DESTDIR=`pwd`/../install-sdk
+
+RUN tput -Txterm setaf 2; echo "[8/10] Building support library..."; tput -Txterm setaf 7;
+ENV PATH="~/workspace/install-sdk/bin:${PATH}"
