@@ -23,7 +23,7 @@ WORKDIR /home/admin/workspace
 
 # setup component versions
 ENV ARCH mips
-ENV TARGET mipsel-unknown-linux-gnu
+ENV TARGET mips-linux-uclibc
 ENV BINUTILS_VER 2.23.2
 ENV GCC_VER 4.6.4
 ENV LINUX_BRANCH v3.x
@@ -69,7 +69,7 @@ RUN mkdir build-binutils && \
 # Step 2. Prepare kernel headers
 RUN tput -Txterm setaf 2; echo "[2/10] Installing kernel headers..."; tput -Txterm setaf 7;
 RUN cd linux-${LINUX_VER} && \
-  make ARCH=${ARCH} INSTALL_HDR_PATH=`pwd`/../install-sdk/usr/${TARGET} headers_install
+  make ARCH=${ARCH} INSTALL_HDR_PATH=`pwd`/../install-sdk/${TARGET} headers_install
 
 # Step 3. Build GMP
 RUN tput -Txterm setaf 2; echo "[3/10] Building GMP..."; tput -Txterm setaf 7;
@@ -121,7 +121,7 @@ RUN mkdir -p build-gcc && \
 # Step 7. Library headers
 RUN tput -Txterm setaf 2; echo "[7/10] Building LIBC headers and CRT files..."; tput -Txterm setaf 7;
 COPY uClibc.config /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
-RUN sed -i 's/KERNEL_HEADERS=""/KERNEL_HEADERS="\/home\/admin\/workspace\/install-sdk\/usr\/'${TARGET}'\/include"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
+RUN sed -i 's/KERNEL_HEADERS=""/KERNEL_HEADERS="\/home\/admin\/workspace\/install-sdk\/'${TARGET}'\/include"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
   sed -i 's/CROSS_COMPILER_PREFIX=""/CROSS_COMPILER_PREFIX="'${TARGET}'-"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
 RUN cd uClibc-ng-${LIBC_VER} && \
   PATH=~/workspace/install-sdk/bin:$PATH LD_LIBRARY_PATH=~/workspace/install-sdk/lib make pregen startfiles CROSS_COMPILE=$TARGET- && \
