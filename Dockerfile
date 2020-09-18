@@ -141,4 +141,4 @@ RUN cd build-gcc && \
 RUN tput -Txterm setaf 2; echo "[9/10] Building C library..."; tput -Txterm setaf 7;
 RUN cd uClibc-ng-${LIBC_VER} && \
   make CROSS_COMPILE=$TARGET- && \
-  make install CROSS_COMPILE=$TARGET- DESTDIR=`pwd`/../install-sdk
+  make install CROSS_COMPILE=$TARGET-
