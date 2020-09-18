@@ -21,9 +21,12 @@ RUN mkdir /home/admin/workspace
 
 WORKDIR /home/admin/workspace
 
-# setup component versions
+# target platform
 ENV ARCH mips
 ENV TARGET mipsel-linux-uclibc
+ENV SDK_ROOT /opt/${TARGET}
+
+# setup component versions
 ENV BINUTILS_VER 2.23.2
 ENV GCC_VER 4.6.4
 ENV LINUX_BRANCH v3.x
@@ -56,26 +59,26 @@ RUN for f in *.tar*; do echo "$f...";tar -xf $f; echo "done"; done
 
 # prepare installation directory
 RUN tput -Txterm setaf 6; echo "Preparing installation directory..."; tput -Txterm setaf 7;
-RUN mkdir -p install-sdk
+RUN sudo mkdir -p ${SDK_ROOT} && sudo chown admin:admin ${SDK_ROOT}
 
 # Step 1. Build binutils
 RUN tput -Txterm setaf 2; echo "[1/10] Building binutils..."; tput -Txterm setaf 7;
 RUN mkdir build-binutils && \
   cd build-binutils && \
-  ../binutils-${BINUTILS_VER}/configure --prefix=`pwd`/../install-sdk --target=${TARGET} --disable-multilib && \
+  ../binutils-${BINUTILS_VER}/configure --prefix=${SDK_ROOT} --target=${TARGET} --disable-multilib && \
   make -j${JOBS} && \
   make install
 
 # Step 2. Prepare kernel headers
 RUN tput -Txterm setaf 2; echo "[2/10] Installing kernel headers..."; tput -Txterm setaf 7;
 RUN cd linux-${LINUX_VER} && \
-  make ARCH=${ARCH} INSTALL_HDR_PATH=`pwd`/../install-sdk/${TARGET} headers_install
+  make ARCH=${ARCH} INSTALL_HDR_PATH=${SDK_ROOT}/${TARGET} headers_install
 
 # Step 3. Build GMP
 RUN tput -Txterm setaf 2; echo "[3/10] Building GMP..."; tput -Txterm setaf 7;
 RUN mkdir -p build-gmp && \
   cd build-gmp && \
-  ../gmp-${GMP_VER}/configure --prefix=`pwd`/../install-sdk && \
+  ../gmp-${GMP_VER}/configure --prefix=${SDK_ROOT} && \
   make -j${JOBS} && \
   make install
 
@@ -83,7 +86,7 @@ RUN mkdir -p build-gmp && \
 RUN tput -Txterm setaf 2; echo "[4/10] Building MPFR..."; tput -Txterm setaf 7;
 RUN mkdir -p build-mpfr && \
   cd build-mpfr && \
-  ../mpfr-${MPFR_VER}/configure --prefix=`pwd`/../install-sdk --with-gmp=`pwd`/../install-sdk && \
+  ../mpfr-${MPFR_VER}/configure --prefix=${SDK_ROOT} --with-gmp=${SDK_ROOT} && \
   make -j${JOBS} && \
   make install
 
@@ -96,9 +99,9 @@ RUN mkdir -p build-mpc && \
   cd - && \
   cd build-mpc && \
   ../mpc-${MPC_VER}/configure \
-    --prefix=`pwd`/../install-sdk \
-    --with-gmp=`pwd`/../install-sdk \
-    --with-mpfr=`pwd`/../install-sdk && \
+    --prefix=${SDK_ROOT} \
+    --with-gmp=${SDK_ROOT} \
+    --with-mpfr=${SDK_ROOT} && \
   make -j${JOBS} && \
   make install
 
@@ -107,11 +110,11 @@ RUN tput -Txterm setaf 2; echo "[6/10] Building first pass of GCC..."; tput -Txt
 RUN mkdir -p build-gcc && \
   cd build-gcc && \
   ../gcc-${GCC_VER}/configure \
-    --prefix=`pwd`/../install-sdk \
+    --prefix=${SDK_ROOT} \
     --target=${TARGET} \
-    --with-gmp=`pwd`/../install-sdk \
-    --with-mpfr=`pwd`/../install-sdk \
-    --with-mpc=`pwd`/../install-sdk \
+    --with-gmp=${SDK_ROOT} \
+    --with-mpfr=${SDK_ROOT} \
+    --with-mpc=${SDK_ROOT} \
     --enable-languages=c,c++ \
     --disable-multilib && \
   make all-gcc && \
@@ -121,17 +124,18 @@ RUN mkdir -p build-gcc && \
 # Step 7. Library headers
 RUN tput -Txterm setaf 2; echo "[7/10] Building LIBC headers and CRT files..."; tput -Txterm setaf 7;
 COPY uClibc.config /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
-RUN sed -i 's/KERNEL_HEADERS=""/KERNEL_HEADERS="\/home\/admin\/workspace\/install-sdk\/'${TARGET}'\/include"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
+  RUN export ESCAPED_ROOT=`bash -c 'echo ${SDK_ROOT//\//\\\/}'` && \
+  sed -i 's/KERNEL_HEADERS=""/KERNEL_HEADERS="'${ESCAPED_ROOT}'\/'${TARGET}'\/include"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
   sed -i 's/CROSS_COMPILER_PREFIX=""/CROSS_COMPILER_PREFIX="'${TARGET}'-"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
-  sed -i 's/RUNTIME_PREFIX=.*/RUNTIME_PREFIX="\/home\/admin\/workspace\/install-sdk\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
-  sed -i 's/DEVEL_PREFIX=.*/DEVEL_PREFIX="\/home\/admin\/workspace\/install-sdk\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
+  sed -i 's/RUNTIME_PREFIX=.*/RUNTIME_PREFIX="'${ESCAPED_ROOT}'\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
+  sed -i 's/DEVEL_PREFIX=.*/DEVEL_PREFIX="'${ESCAPED_ROOT}'\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
   sed -i 's/CROSS_COMPILER_PREFIX=""/CROSS_COMPILER_PREFIX="'${TARGET}'-"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
-ENV PATH="/home/admin/workspace/install-sdk/bin:${PATH}"
-ENV LD_LIBRARY_PATH="/home/admin/workspace/install-sdk/lib"
+ENV PATH="${SDK_ROOT}/bin:${PATH}"
+ENV LD_LIBRARY_PATH="${SDK_ROOT}/lib"
 RUN cd uClibc-ng-${LIBC_VER} && \
   make pregen startfiles CROSS_COMPILE=$TARGET- && \
   make install_headers install_startfiles CROSS_COMPILE=$TARGET- && \
-  ${TARGET}-gcc -nostdlib -nostartfiles -shared -x c /dev/null -o ../install-sdk/${TARGET}/lib/libc.so
+  ${TARGET}-gcc -nostdlib -nostartfiles -shared -x c /dev/null -o ${SDK_ROOT}/${TARGET}/lib/libc.so
 # glibc:
 #RUN mkdir -p build-libc && \
 #  mkdir -p install-libc && \
