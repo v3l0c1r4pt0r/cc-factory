@@ -142,3 +142,9 @@ RUN tput -Txterm setaf 2; echo "[9/10] Building C library..."; tput -Txterm seta
 RUN cd uClibc-ng-${LIBC_VER} && \
   make CROSS_COMPILE=$TARGET- && \
   make install CROSS_COMPILE=$TARGET-
+
+RUN tput -Txterm setaf 2; echo "[10/10] Building final GCC..."; tput -Txterm setaf 7;
+RUN cd build-gcc && \
+  sed -i '/using ::tmpnam;/d' /home/admin/workspace/gcc-4.6.4/libstdc++-v3/include/c_global/cstdio && \
+  make && \
+  make install
