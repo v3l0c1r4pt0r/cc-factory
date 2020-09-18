@@ -124,7 +124,7 @@ RUN mkdir -p build-gcc && \
 # Step 7. Library headers
 RUN tput -Txterm setaf 2; echo "[7/10] Building LIBC headers and CRT files..."; tput -Txterm setaf 7;
 COPY uClibc.config /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
-  RUN export ESCAPED_ROOT=`bash -c 'echo ${SDK_ROOT//\//\\\/}'` && \
+RUN export ESCAPED_ROOT=`bash -c 'echo ${SDK_ROOT//\//\\\/}'` && \
   sed -i 's/KERNEL_HEADERS=""/KERNEL_HEADERS="'${ESCAPED_ROOT}'\/'${TARGET}'\/include"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
   sed -i 's/CROSS_COMPILER_PREFIX=""/CROSS_COMPILER_PREFIX="'${TARGET}'-"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
   sed -i 's/RUNTIME_PREFIX=.*/RUNTIME_PREFIX="'${ESCAPED_ROOT}'\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
