@@ -132,6 +132,16 @@ RUN cd uClibc-ng-${LIBC_VER} && \
   make pregen startfiles CROSS_COMPILE=$TARGET- && \
   make install_headers install_startfiles CROSS_COMPILE=$TARGET- && \
   ${TARGET}-gcc -nostdlib -nostartfiles -shared -x c /dev/null -o ../install-sdk/${TARGET}/lib/libc.so
+# glibc:
+#RUN mkdir -p build-libc && \
+#  mkdir -p install-libc && \
+#  cd build-libc && \
+#  ../${LIBC}-${LIBC_VER}/configure \
+#    --prefix=`pwd`/../install-libc \
+#    --target=${TARGET} && \
+#  make all-gcc && \
+#  #make -j${JOBS} all-gcc && \
+#  sudo make install-gcc
 
 RUN tput -Txterm setaf 2; echo "[8/10] Building support library..."; tput -Txterm setaf 7;
 RUN cd build-gcc && \
