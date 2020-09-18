@@ -11,8 +11,8 @@ build:
 	docker rmi -f $(IMAGE):$(IMAGE_VERSION)
 	docker build --build-arg JOBS=$(JOBS) --tag $(IMAGE):$(IMAGE_VERSION) .
 
-run:
-	docker run --detach --name "cross-gcc" --tty $(IMAGE):$(IMAGE_VERSION)
+run: outdir
+	docker run --detach --name "cross-gcc" --tty -v $(shell pwd)/outdir:/mnt/outdir $(IMAGE):$(IMAGE_VERSION)
 
 shell:
 	docker exec --interactive --tty cross-gcc /bin/bash
@@ -22,3 +22,6 @@ stop:
 
 rm:
 	docker rm -f cross-gcc
+
+outdir:
+	mkdir -p $@

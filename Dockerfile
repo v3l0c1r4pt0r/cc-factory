@@ -162,3 +162,9 @@ RUN cd build-gcc && \
   sed -i '/using ::tmpnam;/d' /home/admin/workspace/gcc-4.6.4/libstdc++-v3/include/c_global/cstdio && \
   make && \
   make install
+
+RUN tput -Txterm setaf 6; echo "Compressing and exporting SDK..."; tput -Txterm setaf 7;
+RUN sudo mkdir /mnt/outdir && sudo chown admin:admin /mnt/outdir
+VOLUME /mnt/outdir
+RUN tar -zcvf /home/admin/workspace/${TARGET}.tar.gz ${SDK_ROOT}
+RUN sudo cp -pr /home/admin/workspace/${TARGET}.tar.gz /mnt/outdir/
