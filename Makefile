@@ -1,5 +1,5 @@
-IMAGE=mipsel-gcc-uclibc
-IMAGE_VERSION=4.6.4-1.0.26
+IMAGE=mips-gcc-uclibc
+IMAGE_VERSION=3.3.2-1.0.12
 
 # modify to use more cores for compilation, set to nothing to let make pick value automatically
 JOBS=1
