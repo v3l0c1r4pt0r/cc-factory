@@ -6,7 +6,7 @@ RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
   # for admin access of normal user
   sudo \
   # for toolchain cross-compilation
-  gcc g++ make gawk texinfo file m4 patch \
+  gcc g++ binutils libc6 libc6-dev libgcc1 make gawk texinfo file m4 patch \
   # for pulling sources
   wget ca-certificates
 
