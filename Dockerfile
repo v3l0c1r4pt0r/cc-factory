@@ -6,9 +6,22 @@ RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
   # for admin access of normal user
   sudo \
   # for toolchain cross-compilation
-  gcc g++ binutils libc6 libc6-dev libgcc1 make gawk texinfo file m4 patch \
+  binutils libc6 libc6-dev libgcc1 make gawk texinfo file m4 patch \
   # for pulling sources
   wget ca-certificates
+
+RUN mkdir dpkg && cd dpkg && \
+  wget http://old-releases.ubuntu.com/ubuntu/pool/universe/g/gcc-3.3/cpp-3.3_3.3.6-15ubuntu4_amd64.deb && \
+  wget http://old-releases.ubuntu.com/ubuntu/pool/universe/g/gcc-3.3/gcc-3.3-base_3.3.6-15ubuntu4_amd64.deb && \
+  wget http://old-releases.ubuntu.com/ubuntu/pool/universe/g/gcc-3.3/gcc-3.3_3.3.6-15ubuntu4_amd64.deb && \
+  dpkg -i gcc-3.3-base_3.3.6-15ubuntu4_amd64.deb && \
+  dpkg -i cpp-3.3_3.3.6-15ubuntu4_amd64.deb && \
+  dpkg -i gcc-3.3_3.3.6-15ubuntu4_amd64.deb
+
+RUN ln -s `which gcc-3.3` /bin/gcc && \
+  ln -s `which g++-3.3` /bin/g++ && \
+  ln -s `which ar-3.3` /bin/ar && \
+  ln -s `which ranlib-3.3` /bin/ranlib
 
 # add unprivileged user and set up workspace
 RUN adduser --disabled-password --gecos '' admin
