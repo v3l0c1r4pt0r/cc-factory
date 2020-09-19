@@ -23,17 +23,17 @@ WORKDIR /home/admin/workspace
 
 # target platform
 ENV ARCH mips
-ENV TARGET mipsel-linux-uclibc
+ENV TARGET mips-linux-uclibc
 ENV SDK_ROOT /opt/${TARGET}
 
 # setup component versions
 ENV BINUTILS_VER 2.23.2
-ENV GCC_VER 4.6.4
-ENV LINUX_BRANCH v3.x
-ENV LINUX_VER 3.4.113
+ENV GCC_VER 3.3.2
+ENV LINUX_BRANCH v4.x
+ENV LINUX_VER 4.1.38
 ENV LIBC "uClibc-ng"
 #ENV LIBC "glibc"
-ENV LIBC_VER 1.0.26
+ENV LIBC_VER 1.0.12
 ENV GMP_VER 4.3.0
 ENV MPFR_VER 3.1.0
 ENV MPC_VER 0.8.1
