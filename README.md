@@ -6,12 +6,13 @@ Factory for cross compilers inside of Docker container
 
 This repository provides Docker containers that allows to build very specific
 GCC-LINUX-LIBC toolchain in reproducible manner. You don't see anything here,
-because it is organised into branches. Each branch is separate triplet, usually
-with very specific version of each component.
+because it is organised into branches. Each branch is separate triplet of
+compiler, OS and standard library, usually with very specific version of each
+component.
 
 Main purpose from developing this repository is to allow to recreate toolchains
 for systems that did not provide public SDKs. By the way it should also work
-decemtly in providing latest compilers for any architecture one would like.
+decently in providing latest compilers for any architecture one would like.
 
 ## Table of contents
 
