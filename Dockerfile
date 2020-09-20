@@ -133,6 +133,7 @@ RUN export ESCAPED_ROOT=`bash -c 'echo ${SDK_ROOT//\//\\\/}'` && \
 ENV PATH="${SDK_ROOT}/bin:${PATH}"
 ENV LD_LIBRARY_PATH="${SDK_ROOT}/lib"
 RUN cd uClibc-ng-${LIBC_VER} && \
+  make silentoldconfig && \
   make pregen startfiles CROSS_COMPILE=$TARGET- && \
   make install_headers install_startfiles CROSS_COMPILE=$TARGET- && \
   ${TARGET}-gcc -nostdlib -nostartfiles -shared -x c /dev/null -o ${SDK_ROOT}/${TARGET}/lib/libc.so
