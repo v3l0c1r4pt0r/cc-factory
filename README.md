@@ -18,4 +18,5 @@ decently in providing latest compilers for any architecture one would like.
 
 Platform | CC        | OS            | LIBC          | branch
 ---------|-----------|---------------|---------------|-------------------------------------------
+MIPS     | gcc 4.6.4 | Linux 4.1.38  | uClibc 1.0.12 | `mips-gcc4.6-linux4.1.38-uclibc1.0.12`
 MIPSEL   | gcc 4.6.4 | Linux 3.4.113 | uClibc 1.0.26 | `mipsel-gcc4.6-linux3.4.113-uclibc1.0.26`
