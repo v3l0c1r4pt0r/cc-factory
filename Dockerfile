@@ -159,6 +159,7 @@ RUN export ESCAPED_ROOT=`bash -c 'echo ${SDK_ROOT//\//\\\/}'` && \
   sed -i 's/DEVEL_PREFIX=.*/DEVEL_PREFIX="'${ESCAPED_ROOT}'\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
   sed -i 's/CROSS_COMPILER_PREFIX=""/CROSS_COMPILER_PREFIX="'${TARGET}'-"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
 RUN cd uClibc-ng-${LIBC_VER} && \
+  make silentoldconfig && \
   make pregen startfiles CROSS_COMPILE=$TARGET- && \
   make install_headers install_startfiles CROSS_COMPILE=$TARGET- && \
   ${TARGET}-gcc -nostdlib -nostartfiles -shared -x c /dev/null -o ${SDK_ROOT}/${TARGET}/lib/libc.so
