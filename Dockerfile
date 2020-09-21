@@ -131,4 +131,6 @@ RUN cd uClibc-ng-${LIBC_VER} && \
   ${TARGET}-gcc -nostdlib -nostartfiles -shared -x c /dev/null -o ../install-sdk/${TARGET}/lib/libc.so
 
 RUN tput -Txterm setaf 2; echo "[8/10] Building support library..."; tput -Txterm setaf 7;
-ENV PATH="~/workspace/install-sdk/bin:${PATH}"
+RUN cd build-gcc && \
+  make all-target-libgcc && \
+  make install-target-libgcc
