@@ -54,35 +54,36 @@ RUN if [ "z${CLOOG_VER}" != "z" ]; then echo "CLooG is not supported yet!"; exit
 RUN tput -Txterm setaf 6; echo "Extracting sources..."; tput -Txterm setaf 7;
 RUN for f in *.tar*; do echo "$f...";tar -xf $f; echo "done"; done
 
+# prepare installation directory
+RUN tput -Txterm setaf 6; echo "Preparing installation directory..."; tput -Txterm setaf 7;
+RUN mkdir -p install-sdk
+
 # Step 1. Build binutils
 RUN tput -Txterm setaf 2; echo "[1/10] Building binutils..."; tput -Txterm setaf 7;
 RUN mkdir build-binutils && \
-  mkdir -p install-binutils && \
   cd build-binutils && \
-  ../binutils-${BINUTILS_VER}/configure --prefix=`pwd`/../install-binutils --target=${TARGET} --disable-multilib && \
+  ../binutils-${BINUTILS_VER}/configure --prefix=`pwd`/../install-sdk --target=${TARGET} --disable-multilib && \
   make -j${JOBS} && \
-  sudo make install
+  make install
 
 # Step 2. Prepare kernel headers
 RUN tput -Txterm setaf 2; echo "[2/10] Installing kernel headers..."; tput -Txterm setaf 7;
 RUN cd linux-${LINUX_VER} && \
-  sudo make ARCH=${ARCH} INSTALL_HDR_PATH=/usr/${TARGET} headers_install
+  make ARCH=${ARCH} INSTALL_HDR_PATH=`pwd`/../install-sdk/usr/${TARGET} headers_install
 
 # Step 3. Build GMP
 RUN tput -Txterm setaf 2; echo "[3/10] Building GMP..."; tput -Txterm setaf 7;
 RUN mkdir -p build-gmp && \
-  mkdir -p install-gmp && \
   cd build-gmp && \
-  ../gmp-${GMP_VER}/configure --prefix=`pwd`/../install-gmp && \
+  ../gmp-${GMP_VER}/configure --prefix=`pwd`/../install-sdk && \
   make -j${JOBS} && \
   make install
 
 # Step 4. Build MPFR
 RUN tput -Txterm setaf 2; echo "[4/10] Building MPFR..."; tput -Txterm setaf 7;
 RUN mkdir -p build-mpfr && \
-  mkdir -p install-mpfr && \
   cd build-mpfr && \
-  ../mpfr-${MPFR_VER}/configure --prefix=`pwd`/../install-mpfr --with-gmp=`pwd`/../install-gmp && \
+  ../mpfr-${MPFR_VER}/configure --prefix=`pwd`/../install-sdk --with-gmp=`pwd`/../install-sdk && \
   make -j${JOBS} && \
   make install
 
@@ -90,29 +91,27 @@ RUN mkdir -p build-mpfr && \
 RUN tput -Txterm setaf 2; echo "[5/10] Building MPC..."; tput -Txterm setaf 7;
 COPY gmp_rnda.patch /home/admin/workspace
 RUN mkdir -p build-mpc && \
-  mkdir -p install-mpc && \
   cd mpc-${MPC_VER} && \
   patch -p1 <../gmp_rnda.patch && \
   cd - && \
   cd build-mpc && \
   ../mpc-${MPC_VER}/configure \
-    --prefix=`pwd`/../install-mpc \
-    --with-gmp=`pwd`/../install-gmp \
-    --with-mpfr=`pwd`/../install-mpfr && \
+    --prefix=`pwd`/../install-sdk \
+    --with-gmp=`pwd`/../install-sdk \
+    --with-mpfr=`pwd`/../install-sdk && \
   make -j${JOBS} && \
   make install
 
 # Step 6. First pass compiler
 RUN tput -Txterm setaf 2; echo "[6/10] Building first pass of GCC..."; tput -Txterm setaf 7;
 RUN mkdir -p build-gcc && \
-  mkdir -p install-1st-gcc && \
   cd build-gcc && \
   ../gcc-${GCC_VER}/configure \
-    --prefix=`pwd`/../install-1st-gcc \
+    --prefix=`pwd`/../install-sdk \
     --target=${TARGET} \
-    --with-gmp=`pwd`/../install-gmp \
-    --with-mpfr=`pwd`/../install-mpfr \
-    --with-mpc=`pwd`/../install-mpc \
+    --with-gmp=`pwd`/../install-sdk \
+    --with-mpfr=`pwd`/../install-sdk \
+    --with-mpc=`pwd`/../install-sdk \
     --enable-languages=c,c++ \
     --disable-multilib && \
   make -j${JOBS} all-gcc && \
