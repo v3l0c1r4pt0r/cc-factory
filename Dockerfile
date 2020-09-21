@@ -116,3 +116,13 @@ RUN mkdir -p build-gcc && \
     --disable-multilib && \
   make -j${JOBS} all-gcc && \
   sudo make install-gcc
+  make install-gcc
+
+# Step 7. Library headers
+RUN tput -Txterm setaf 2; echo "[7/10] Building LIBC headers and CRT files..."; tput -Txterm setaf 7;
+COPY uClibc.config /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
+RUN sed -i 's/KERNEL_HEADERS=""/KERNEL_HEADERS="\/home\/admin\/workspace\/install-sdk\/usr\/'${TARGET}'\/include"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
+  sed -i 's/CROSS_COMPILER_PREFIX=""/CROSS_COMPILER_PREFIX="'${TARGET}'-"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
+RUN cd uClibc-ng-${LIBC_VER} && \
+  PATH=~/workspace/install-sdk/bin:$PATH LD_LIBRARY_PATH=~/workspace/install-sdk/lib make pregen startfiles CROSS_COMPILE=$TARGET- && \
+  PATH=~/workspace/install-sdk/bin:$PATH LD_LIBRARY_PATH=~/workspace/install-sdk/lib make install_headers install_startfiles CROSS_COMPILE=$TARGET- DESTDIR=`pwd`/../install-sdk
