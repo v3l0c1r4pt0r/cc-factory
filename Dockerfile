@@ -101,10 +101,18 @@ RUN mkdir -p build-mpc && \
 	make -j${JOBS} && \
 	make install
 
-# Step 3. First pass compiler
-#RUN tput -Txterm setaf 2; echo "[3/7] Building first pass of GCC..."; tput -Txterm setaf 7;
-#RUN mkdir -p build-gcc && \
-#  cd build-gcc && \
-#  ../gcc-${GCC_VER}/configure --prefix=/usr/local --target=${TARGET} --enable-languages=c,c++ --disable-multilib && \
-#  make -j${JOBS} all-gcc && \
-#  sudo make install-gcc
+# Step 6. First pass compiler
+RUN tput -Txterm setaf 2; echo "[6/10] Building first pass of GCC..."; tput -Txterm setaf 7;
+RUN mkdir -p build-gcc && \
+	mkdir -p install-1st-gcc && \
+  cd build-gcc && \
+  ../gcc-${GCC_VER}/configure \
+		--prefix=`pwd`/../install-1st-gcc \
+		--target=${TARGET} \
+		--with-gmp=`pwd`/../install-gmp \
+		--with-mpfr=`pwd`/../install-mpfr \
+		--with-mpc=`pwd`/../install-mpc \
+		--enable-languages=c,c++ \
+		--disable-multilib && \
+  make -j${JOBS} all-gcc && \
+  sudo make install-gcc
