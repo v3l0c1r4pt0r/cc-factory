@@ -123,14 +123,14 @@ RUN tput -Txterm setaf 2; echo "[7/10] Building LIBC headers and CRT files..."; 
 COPY uClibc.config /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
 RUN sed -i 's/KERNEL_HEADERS=""/KERNEL_HEADERS="\/home\/admin\/workspace\/install-sdk\/'${TARGET}'\/include"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
   sed -i 's/CROSS_COMPILER_PREFIX=""/CROSS_COMPILER_PREFIX="'${TARGET}'-"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
-  sed -i 's/RUNTIME_PREFIX=.*/RUNTIME_PREFIX="\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
-  sed -i 's/DEVEL_PREFIX=.*/DEVEL_PREFIX="\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
+  sed -i 's/RUNTIME_PREFIX=.*/RUNTIME_PREFIX="\/home\/admin\/workspace\/install-sdk\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
+  sed -i 's/DEVEL_PREFIX=.*/DEVEL_PREFIX="\/home\/admin\/workspace\/install-sdk\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
   sed -i 's/CROSS_COMPILER_PREFIX=""/CROSS_COMPILER_PREFIX="'${TARGET}'-"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
 ENV PATH="/home/admin/workspace/install-sdk/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/home/admin/workspace/install-sdk/lib"
 RUN cd uClibc-ng-${LIBC_VER} && \
   make pregen startfiles CROSS_COMPILE=$TARGET- && \
-  make install_headers install_startfiles CROSS_COMPILE=$TARGET- DESTDIR=`pwd`/../install-sdk && \
+  make install_headers install_startfiles CROSS_COMPILE=$TARGET- && \
   ${TARGET}-gcc -nostdlib -nostartfiles -shared -x c /dev/null -o ../install-sdk/${TARGET}/lib/libc.so
 
 RUN tput -Txterm setaf 2; echo "[8/10] Building support library..."; tput -Txterm setaf 7;
