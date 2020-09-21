@@ -23,7 +23,7 @@ WORKDIR /home/admin/workspace
 
 # setup component versions
 ENV ARCH mips
-ENV TARGET mips-linux-uclibc
+ENV TARGET mipsel-linux-uclibc
 ENV BINUTILS_VER 2.23.2
 ENV GCC_VER 4.6.4
 ENV LINUX_BRANCH v3.x
@@ -114,14 +114,17 @@ RUN mkdir -p build-gcc && \
     --with-mpc=`pwd`/../install-sdk \
     --enable-languages=c,c++ \
     --disable-multilib && \
-  make -j${JOBS} all-gcc && \
-  sudo make install-gcc
+  make all-gcc && \
+  #make -j${JOBS} all-gcc && \
   make install-gcc
 
 # Step 7. Library headers
 RUN tput -Txterm setaf 2; echo "[7/10] Building LIBC headers and CRT files..."; tput -Txterm setaf 7;
 COPY uClibc.config /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
 RUN sed -i 's/KERNEL_HEADERS=""/KERNEL_HEADERS="\/home\/admin\/workspace\/install-sdk\/'${TARGET}'\/include"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
+  sed -i 's/CROSS_COMPILER_PREFIX=""/CROSS_COMPILER_PREFIX="'${TARGET}'-"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
+  sed -i 's/RUNTIME_PREFIX=.*/RUNTIME_PREFIX="\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
+  sed -i 's/DEVEL_PREFIX=.*/DEVEL_PREFIX="\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
   sed -i 's/CROSS_COMPILER_PREFIX=""/CROSS_COMPILER_PREFIX="'${TARGET}'-"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
 ENV PATH="/home/admin/workspace/install-sdk/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/home/admin/workspace/install-sdk/lib"
