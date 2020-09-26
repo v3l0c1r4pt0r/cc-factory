@@ -12,7 +12,9 @@ RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
   # for bzip2 extraction
   bzip2 \
   # for pulling sources
-  wget ca-certificates
+  wget ca-certificates \
+  # for menuconfigs
+  libncurses5-dev
 
 # add unprivileged user and set up workspace
 RUN adduser --disabled-password --gecos '' admin
