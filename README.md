@@ -14,6 +14,19 @@ Main purpose from developing this repository is to allow to recreate toolchains
 for systems that did not provide public SDKs. By the way it should also work
 decently in providing latest compilers for any architecture one would like.
 
+## Usage
+
+1. Select desired target from [Table of contents](#table-of-contents)
+2. Checkout to target's branch: `git checkout <branch-name>`
+3. Make sure Docker is running and you have access to Docker daemon
+4. Build container with `make build`
+5. Wait couple of minutes for toolchain to build
+6. Run container: `make run`
+7. If you want to play with toolchain in isolated container, type `make shell`.
+   You will be dropped into normal user interactive shell
+8. If you prefer to run toolchain on your own system, type: `make sdk`
+9. `outdir` directory should appear, with tarball inside
+
 ## Table of contents
 
 Platform | CC        | OS            | LIBC          | branch
