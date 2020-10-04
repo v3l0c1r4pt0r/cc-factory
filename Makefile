@@ -25,3 +25,6 @@ rm:
 
 outdir:
 	mkdir -p $@
+
+sdk:
+	docker exec cross-gcc /home/admin/build-sdk.sh

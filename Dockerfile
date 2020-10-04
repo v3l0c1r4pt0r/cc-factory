@@ -165,8 +165,7 @@ RUN cd build-gcc && \
   make && \
   make install
 
-RUN tput -Txterm setaf 6; echo "Compressing and exporting SDK..."; tput -Txterm setaf 7;
+# post-build actions
 RUN sudo mkdir /mnt/outdir && sudo chown admin:admin /mnt/outdir
 VOLUME /mnt/outdir
-RUN tar -zcvf /home/admin/workspace/${TARGET}.tar.gz ${SDK_ROOT}
-RUN sudo cp -pr /home/admin/workspace/${TARGET}.tar.gz /mnt/outdir/
+COPY build-sdk.sh /home/admin/
