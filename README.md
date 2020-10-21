@@ -27,6 +27,24 @@ decently in providing latest compilers for any architecture one would like.
 8. If you prefer to run toolchain on your own system, type: `make sdk`
 9. `outdir` directory should appear, with tarball inside
 
+## Installing SDK
+
+If you decided to export SDK outside container, its installation is as simple as
+unpacking the package to `/`:
+
+```sh
+tar -zxvf mips-linux-uclibc.tar.gz -C /
+```
+
+By default SDK is installed in `/opt/${TARGET}` directory, where `${TARGET}` is
+full target name, e.g. `mips-linux-uclibc` for big endian MIPS with uClibc as C
+library.
+
+If you prefer to have SDK installed elsewhere, you have to specify this before
+attempting to build the image, by editing `SDK_ROOT` variable in `Dockefile`. If
+you try to unpack SDK into different path, it simply won't work, as this path is
+hardcoded into compiler!
+
 ## Table of contents
 
 Platform | CC        | OS            | LIBC          | branch
