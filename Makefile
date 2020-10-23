@@ -1,5 +1,16 @@
-IMAGE=mips-gcc-uclibc
-IMAGE_VERSION=4.6.4-1.0.12
+TAG=$(shell git describe --always --dirty)
+TAG?=undefined
+
+# magic for substituting space to minus sign
+empty :=
+space := $(empty) $(empty)
+
+# split tag on minus sign using spaces to a list
+TAGPARTS=$(subst -, ,$(TAG))
+# return fields 1-4 of a list and join with minus signs again
+IMAGE=$(subst $(space),-,$(wordlist 1,4,$(TAGPARTS)))
+# return fields 5-999 (cannot use infinity) of a list and join with minus signs again
+IMAGE_VERSION=$(subst $(space),-,$(wordlist 5,999,$(TAGPARTS)))
 
 # modify to use more cores for compilation, set to nothing to let make pick value automatically
 JOBS=1
