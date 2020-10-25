@@ -13,8 +13,13 @@ IMAGE=$(subst $(space),-,$(wordlist 1,4,$(TAGPARTS)))
 IMAGE_VERSION=$(subst $(space),-,$(wordlist 5,999,$(TAGPARTS)))
 
 # default in case something went wrong
-IMAGE?=cc-factory
-IMAGE_VERSION?=undefined
+ifeq ($(IMAGE),)
+IMAGE=cc-factory
+endif
+
+ifeq ($(IMAGE_VERSION),)
+IMAGE_VERSION=0
+endif
 
 # modify to use more cores for compilation, set to nothing to let make pick value automatically
 JOBS=1
