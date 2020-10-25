@@ -48,3 +48,7 @@ outdir:
 
 sdk:
 	docker exec cross-gcc /home/admin/build-sdk.sh $(IMAGE) $(IMAGE_VERSION)
+
+env:
+	@echo "IMAGE=$(IMAGE)"
+	@echo "IMAGE_VERSION=$(IMAGE_VERSION)"
