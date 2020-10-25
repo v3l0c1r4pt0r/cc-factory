@@ -30,3 +30,11 @@ jobs:
         with:
           # Comma-delimited list of build-time variables
           build_args: JOBS=4
+      - name: Export SDK
+        run: |
+         make sdk
+      - name: Share SDK
+        uses: actions/upload-artifact@v1
+        with:
+          name: SDK
+          path: outdir/*.tar.gz
