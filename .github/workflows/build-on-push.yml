@@ -31,5 +31,6 @@ jobs:
           make sdk
       - name: Print diagnostic info
         run: |
+          pwd
           ls -l
           ls -l outdir
