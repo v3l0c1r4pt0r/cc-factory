@@ -29,9 +29,3 @@ jobs:
         run: |
           make run
           make sdk
-
-      - name: Share SDK
-        uses: actions/upload-artifact@v1
-        with:
-          name: SDK
-          path: outdir/*.tar.gz
