@@ -47,4 +47,4 @@ outdir:
 	mkdir -p $@
 
 sdk:
-	docker exec cross-gcc /home/admin/build-sdk.sh
+	docker exec cross-gcc /home/admin/build-sdk.sh $(IMAGE) $(IMAGE_VERSION)
