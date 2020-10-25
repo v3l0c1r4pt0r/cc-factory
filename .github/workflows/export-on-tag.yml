@@ -41,7 +41,7 @@ jobs:
           ls -l outdir
 
       - name: Share SDK
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: SDK
           path: outdir/*.tar.gz
