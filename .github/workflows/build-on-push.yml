@@ -24,8 +24,6 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Build and push Docker images
-        # You may pin to the exact commit or the version.
-        # uses: docker/build-push-action@ab83648e2e224cfeeab899e23b639660765c3a89
         uses: docker/build-push-action@v1.1.1
         with:
           # Comma-delimited list of build-time variables
