@@ -34,6 +34,11 @@ jobs:
           make run
           make sdk
 
+      - name: Print diagnostic info
+        run: |
+          ls -l
+          ls -l outdir
+
       - name: Share SDK
         uses: actions/upload-artifact@v1
         with:
