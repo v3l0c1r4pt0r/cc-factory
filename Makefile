@@ -19,7 +19,7 @@ all:
 	echo "Do sth else. Plz"
 
 build:
-	docker rmi -f $(IMAGE):$(IMAGE_VERSION)
+	docker rmi -f $(IMAGE):$(IMAGE_VERSION) || true
 	docker build --build-arg JOBS=$(JOBS) --tag $(IMAGE):$(IMAGE_VERSION) .
 
 run: outdir
