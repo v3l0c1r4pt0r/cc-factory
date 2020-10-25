@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
 
       - run: |
-          git fetch --prune --tags
+          git fetch --prune --tags --force
 
       - name: Build Docker image
         run: |
