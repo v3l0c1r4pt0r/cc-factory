@@ -29,3 +29,7 @@ jobs:
         run: |
           make run
           make sdk
+      - name: Print diagnostic info
+        run: |
+          ls -l
+          ls -l outdir
