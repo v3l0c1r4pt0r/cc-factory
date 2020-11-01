@@ -54,4 +54,5 @@ jobs:
           # dunno if useful, but why not to erase it?
           export HISTFILE=
           echo "${DOCKER_ACCESS_TOKEN}" | docker login -u ccfactory --password-stdin
+          docker tag ${IMAGE}:${IMAGE_VERSION} ccfactory/${IMAGE}:${IMAGE_VERSION}
           docker push ccfactory/${IMAGE}:${IMAGE_VERSION}
