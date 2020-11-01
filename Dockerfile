@@ -22,21 +22,21 @@ RUN mkdir /home/admin/workspace
 WORKDIR /home/admin/workspace
 
 # target platform
-ENV ARCH mips
-ENV TARGET mips-linux-uclibc
+ENV ARCH x86_64
+ENV TARGET x86_64-linux-uclibc
 ENV SDK_ROOT /opt/${TARGET}
 
 # setup component versions
-ENV BINUTILS_VER 2.23.2
-ENV GCC_VER 4.6.4
-ENV LINUX_BRANCH v4.x
-ENV LINUX_VER 4.1.38
+ENV BINUTILS_VER 2.35.1
+ENV GCC_VER 10.2.0
+ENV LINUX_BRANCH v5.x
+ENV LINUX_VER 5.9.1
 ENV LIBC "uClibc-ng"
 #ENV LIBC "glibc"
-ENV LIBC_VER 1.0.12
-ENV GMP_VER 4.3.0
-ENV MPFR_VER 3.1.0
-ENV MPC_VER 0.8.1
+ENV LIBC_VER 1.0.36
+ENV GMP_VER 6.2.0
+ENV MPFR_VER 4.1.0
+ENV MPC_VER 1.2.0
 ENV ISL_VER ""
 ENV CLOOG_VER ""
 
