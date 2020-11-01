@@ -119,7 +119,8 @@ RUN mkdir -p build-gcc && \
     --with-mpfr=${SDK_ROOT} \
     --with-mpc=${SDK_ROOT} \
     --enable-languages=c,c++ \
-    --disable-multilib && \
+    --disable-multilib \
+    --disable-libsanitizer && \
   make all-gcc && \
   #make -j${JOBS} all-gcc && \
   make install-gcc
