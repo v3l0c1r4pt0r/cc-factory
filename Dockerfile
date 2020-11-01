@@ -162,7 +162,6 @@ RUN cd uClibc-ng-${LIBC_VER} && \
 
 RUN tput -Txterm setaf 2; echo "[10/10] Building final GCC..."; tput -Txterm setaf 7;
 RUN cd build-gcc && \
-  sed -i '/using ::tmpnam;/d' /home/admin/workspace/gcc-4.6.4/libstdc++-v3/include/c_global/cstdio && \
   make -j${JOBS} && \
   make install
 
