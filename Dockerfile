@@ -49,7 +49,7 @@ RUN wget http://ftpmirror.gnu.org/gcc/gcc-${GCC_VER}/gcc-${GCC_VER}.tar.gz
 RUN wget https://www.kernel.org/pub/linux/kernel/${LINUX_BRANCH}/linux-${LINUX_VER}.tar.xz
 RUN bash -c "if [ \"z${LIBC}\" == \"zglibc\" ]; then wget http://ftpmirror.gnu.org/glibc/glibc-${LIBC_VER}.tar.xz; fi"
 RUN bash -c "if [ \"z${LIBC}\" == \"zuClibc-ng\" ]; then wget https://downloads.uclibc-ng.org/releases/${LIBC_VER}/uClibc-ng-${LIBC_VER}.tar.gz; fi"
-RUN wget http://ftpmirror.gnu.org/gmp/gmp-${GMP_VER}.tar.zst
+RUN wget http://ftpmirror.gnu.org/gmp/gmp-${GMP_VER}.tar.bz2
 RUN wget http://ftpmirror.gnu.org/mpfr/mpfr-${MPFR_VER}.tar.gz
 RUN wget http://www.multiprecision.org/downloads/mpc-${MPC_VER}.tar.gz
 RUN if [ "z${ISL_VER}" != "z" ]; then echo "ISL is not supported yet!"; exit 1; fi
