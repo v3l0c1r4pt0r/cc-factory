@@ -45,3 +45,13 @@ jobs:
         with:
           name: SDK
           path: outdir/*.tar.gz
+
+      - name: Push to Docker Hub
+        env:
+          DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+        run: |
+          eval $(make env)
+          # dunno if useful, but why not to erase it?
+          export HISTFILE=
+          echo "${DOCKER_ACCESS_TOKEN}" | docker login -u ccfactory --password-stdin
+          docker push ccfactory/${IMAGE}:${IMAGE_VERSION}
