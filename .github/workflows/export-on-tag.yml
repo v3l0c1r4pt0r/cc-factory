@@ -56,3 +56,4 @@ jobs:
           echo "${DOCKER_ACCESS_TOKEN}" | docker login -u ccfactory --password-stdin
           docker tag ${IMAGE}:${IMAGE_VERSION} ccfactory/${IMAGE}:${IMAGE_VERSION}
           docker push ccfactory/${IMAGE}:${IMAGE_VERSION}
+          docker logout
