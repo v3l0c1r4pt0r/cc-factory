@@ -163,7 +163,6 @@ RUN cd uClibc-ng-${LIBC_VER} && \
 
 RUN tput -Txterm setaf 2; echo "[10/10] Building final GCC..."; tput -Txterm setaf 7;
 RUN cd build-gcc && \
-  sed -i 's/ucontext.h/sys\/ucontext.h/g' ../gcc-${GCC_VER}/libsanitizer/sanitizer_common/sanitizer_linux.cpp && \
   make -j${JOBS} && \
   make install
 
