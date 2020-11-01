@@ -17,6 +17,8 @@ RUN apt-get update && \
     sudo \
     # for toolchain cross-compilation
     binutils gcc-3.4 make gawk texinfo file m4 patch \
+    # for bzip2 extraction
+    bzip2 \
     # for pulling sources
     wget ca-certificates
 
