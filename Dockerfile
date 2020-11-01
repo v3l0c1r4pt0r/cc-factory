@@ -96,11 +96,7 @@ RUN mkdir -p build-mpfr && \
 
 # Step 5. Build MPC
 RUN tput -Txterm setaf 2; echo "[5/10] Building MPC..."; tput -Txterm setaf 7;
-COPY gmp_rnda.patch /home/admin/workspace
 RUN mkdir -p build-mpc && \
-  cd mpc-${MPC_VER} && \
-  patch -p1 <../gmp_rnda.patch && \
-  cd - && \
   cd build-mpc && \
   ../mpc-${MPC_VER}/configure \
     --prefix=${SDK_ROOT} \
