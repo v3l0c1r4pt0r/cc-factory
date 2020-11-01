@@ -109,6 +109,7 @@ RUN mkdir -p build-mpc && \
 
 # Step 6. First pass compiler
 RUN tput -Txterm setaf 2; echo "[6/10] Building first pass of GCC..."; tput -Txterm setaf 7;
+ENV LD_LIBRARY_PATH="${SDK_ROOT}/lib"
 RUN mkdir -p build-gcc && \
   cd build-gcc && \
   ../gcc-${GCC_VER}/configure \
@@ -133,7 +134,6 @@ RUN export ESCAPED_ROOT=`bash -c 'echo ${SDK_ROOT//\//\\\/}'` && \
   sed -i 's/DEVEL_PREFIX=.*/DEVEL_PREFIX="'${ESCAPED_ROOT}'\/'${TARGET}'\/"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config && \
   sed -i 's/CROSS_COMPILER_PREFIX=""/CROSS_COMPILER_PREFIX="'${TARGET}'-"/g' /home/admin/workspace/uClibc-ng-${LIBC_VER}/.config
 ENV PATH="${SDK_ROOT}/bin:${PATH}"
-ENV LD_LIBRARY_PATH="${SDK_ROOT}/lib"
 RUN cd uClibc-ng-${LIBC_VER} && \
   make silentoldconfig && \
   make pregen startfiles CROSS_COMPILE=$TARGET- && \
