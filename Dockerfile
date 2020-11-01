@@ -1,25 +1,6 @@
 ARG JOBS=1
 FROM ubuntu:12.04
 
-# target platform
-ENV ARCH mips
-ENV TARGET mipsel-linux-uclibc
-ENV SDK_ROOT /opt/${TARGET}
-
-# setup component versions
-ENV BINUTILS_VER 2.23.2
-ENV GCC_VER 4.6.4
-ENV LINUX_BRANCH v3.x
-ENV LINUX_VER 3.4.113
-ENV LIBC "uClibc-ng"
-#ENV LIBC "glibc"
-ENV LIBC_VER 1.0.26
-ENV GMP_VER 4.3.0
-ENV MPFR_VER 3.1.0
-ENV MPC_VER 0.8.1
-ENV ISL_VER ""
-ENV CLOOG_VER ""
-
 # prepare system and prerequisites
 RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
   # for admin access of normal user
@@ -41,6 +22,25 @@ USER admin:admin
 RUN mkdir /home/admin/workspace
 
 WORKDIR /home/admin/workspace
+
+# target platform
+ENV ARCH mips
+ENV TARGET mipsel-linux-uclibc
+ENV SDK_ROOT /opt/${TARGET}
+
+# setup component versions
+ENV BINUTILS_VER 2.23.2
+ENV GCC_VER 4.6.4
+ENV LINUX_BRANCH v3.x
+ENV LINUX_VER 3.4.113
+ENV LIBC "uClibc-ng"
+#ENV LIBC "glibc"
+ENV LIBC_VER 1.0.26
+ENV GMP_VER 4.3.0
+ENV MPFR_VER 3.1.0
+ENV MPC_VER 0.8.1
+ENV ISL_VER ""
+ENV CLOOG_VER ""
 
 # pull sources
 RUN tput -Txterm setaf 6; echo "Downloading sources..."; tput -Txterm setaf 7;
