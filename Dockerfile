@@ -7,6 +7,8 @@ RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
   sudo \
   # for toolchain cross-compilation
   gcc g++ make gawk texinfo file m4 patch \
+  # for installation of kernel headers
+  rsync \
   # for pulling sources
   wget ca-certificates
 
