@@ -1,5 +1,6 @@
 ARG JOBS=1
 FROM ubuntu:12.04
+ARG JOBS
 
 # prepare system and prerequisites
 RUN apt-get update && apt-get upgrade -yq && apt-get install -yq \
