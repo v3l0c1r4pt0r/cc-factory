@@ -48,7 +48,7 @@ ENV TARGET mips-linux-uclibc
 ENV SDK_ROOT /opt/${TARGET}
 
 # setup component versions
-ENV BINUTILS_VER 2.23.2
+ENV BINUTILS_VER 2.15
 ENV GCC_VER 3.3.2
 ENV LINUX_BRANCH v4.x
 ENV LINUX_VER 4.1.38
