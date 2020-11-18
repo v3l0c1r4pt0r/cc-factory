@@ -28,7 +28,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          make build
+          make build JOBS=
       - name: Export SDK
         run: |
           make run
