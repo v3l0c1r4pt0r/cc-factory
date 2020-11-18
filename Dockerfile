@@ -88,7 +88,7 @@ RUN tput -Txterm setaf 2; echo "[1/10] Building binutils..."; tput -Txterm setaf
 RUN mkdir build-binutils && \
   cd build-binutils && \
   ../binutils-${BINUTILS_VER}/configure --prefix=${SDK_ROOT} --target=${TARGET} --disable-multilib && \
-  make -j${JOBS} && \
+  make && \
   make install
 
 # Step 2. Prepare kernel headers
