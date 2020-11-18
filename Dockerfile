@@ -26,7 +26,8 @@ RUN ln -s `which gcc-3.4` /bin/gcc && \
   ln -s `which ranlib-3.4` /bin/ranlib
 
 # add unprivileged user and set up workspace
-RUN adduser --disabled-password --gecos '' admin
+RUN useradd -m admin
+RUN passwd -d admin
 
 RUN echo "admin ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/admin && chmod 0440 /etc/sudoers.d/admin
 
