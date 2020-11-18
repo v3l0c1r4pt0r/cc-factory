@@ -1,5 +1,4 @@
 ARG JOBS=1
-FROM ubuntu:12.04
 FROM debian:squeeze
 ARG JOBS
 
