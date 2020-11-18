@@ -2,8 +2,11 @@ ARG JOBS=1
 FROM ubuntu:12.04
 FROM debian:squeeze
 
-# swap repository
+# swap repository to archive of debian 6.0
 RUN echo 'deb http://archive-klecker.debian.org/debian-archive/debian/ squeeze contrib main non-free' >/etc/apt/sources.list
+
+# add even older repo of debian 5.0
+RUN echo 'deb http://archive-klecker.debian.org/debian-archive/debian/ lenny contrib main non-free' >>/etc/apt/sources.list
 
 # prepare system and prerequisites
 RUN apt-get update && \
@@ -12,9 +15,15 @@ RUN apt-get update && \
     # for admin access of normal user
     sudo \
     # for toolchain cross-compilation
-    binutils gcc make gawk texinfo file m4 patch \
+    binutils gcc-3.4 make gawk texinfo file m4 patch \
     # for pulling sources
     wget ca-certificates
+
+# create symlinks for gcc, so no CC has to be passed
+RUN ln -s `which gcc-3.4` /bin/gcc && \
+  ln -s `which g++-3.4` /bin/g++ && \
+  ln -s `which ar-3.4` /bin/ar && \
+  ln -s `which ranlib-3.4` /bin/ranlib
 
 # add unprivileged user and set up workspace
 RUN adduser --disabled-password --gecos '' admin
