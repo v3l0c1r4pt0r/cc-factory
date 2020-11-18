@@ -19,6 +19,10 @@ RUN apt-get update && \
     # for pulling sources
     wget ca-certificates
 
+# force installation of libc6 with -dev
+RUN apt-get install -yq --force-yes libc6=2.11.3-4 libc-bin=2.11.3-4
+RUN apt-get install -yq --force-yes libc6-dev
+
 # create symlinks for gcc, so no CC has to be passed
 RUN ln -s `which gcc-3.4` /bin/gcc && \
   ln -s `which g++-3.4` /bin/g++ && \
