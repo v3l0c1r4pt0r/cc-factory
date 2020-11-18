@@ -63,7 +63,7 @@ ENV CLOOG_VER ""
 
 # pull sources
 RUN tput -Txterm setaf 6; echo "Downloading sources..."; tput -Txterm setaf 7;
-RUN wget --no-check-certificate http://ftpmirror.gnu.org/binutils/binutils-${BINUTILS_VER}.tar.gz
+RUN wget --no-check-certificate http://ftpmirror.gnu.org/binutils/binutils-${BINUTILS_VER}.tar.bz2
 RUN wget --no-check-certificate http://ftpmirror.gnu.org/gcc/gcc-${GCC_VER}/gcc-${GCC_VER}.tar.gz
 RUN wget --no-check-certificate https://www.kernel.org/pub/linux/kernel/${LINUX_BRANCH}/linux-${LINUX_VER}.tar.xz
 RUN bash -c "if [ \"z${LIBC}\" == \"zglibc\" ]; then wget --no-check-certificate http://ftpmirror.gnu.org/glibc/glibc-${LIBC_VER}.tar.xz; fi"
