@@ -6,7 +6,7 @@ ARG JOBS
 RUN echo 'deb http://archive-klecker.debian.org/debian-archive/debian/ squeeze contrib main non-free' >/etc/apt/sources.list
 
 # add even older repo of debian 5.0
-RUN echo 'deb http://archive-klecker.debian.org/debian-archive/debian/ lenny contrib main non-free' >>/etc/apt/sources.list
+RUN echo 'deb http://archive-klecker.debian.org/debian-archive/debian/ etch contrib main non-free' >>/etc/apt/sources.list
 
 # prepare system and prerequisites
 RUN apt-get update && \
@@ -15,7 +15,7 @@ RUN apt-get update && \
     # for admin access of normal user
     sudo \
     # for toolchain cross-compilation
-    binutils gcc-3.4 make gawk texinfo file m4 patch \
+    binutils gcc-3.3 make gawk texinfo file m4 patch \
     # for bzip2 extraction
     bzip2 \
     # for binutils compilation
@@ -28,10 +28,10 @@ RUN apt-get install -yq --force-yes libc6=2.11.3-4 libc-bin=2.11.3-4
 RUN apt-get install -yq --force-yes libc6-dev
 
 # create symlinks for gcc, so no CC has to be passed
-RUN ln -s `which gcc-3.4` /bin/gcc && \
-  ln -s `which g++-3.4` /bin/g++ && \
-  ln -s `which ar-3.4` /bin/ar && \
-  ln -s `which ranlib-3.4` /bin/ranlib
+RUN ln -s `which gcc-3.3` /bin/gcc && \
+  ln -s `which g++-3.3` /bin/g++ && \
+  ln -s `which ar-3.3` /bin/ar && \
+  ln -s `which ranlib-3.3` /bin/ranlib
 
 # add unprivileged user and set up workspace
 RUN useradd -m admin
