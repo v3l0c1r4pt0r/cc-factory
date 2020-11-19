@@ -131,8 +131,6 @@ RUN mkdir -p build-mpc && \
 
 # Step 6. First pass compiler
 RUN tput -Txterm setaf 2; echo "[6/10] Building first pass of GCC..."; tput -Txterm setaf 7;
-COPY obstack.patch /home/admin/workspace/gcc-${GCC_VER}/
-RUN cd gcc-${GCC_VER} && patch -p1 <obstack.patch
 RUN mkdir -p build-gcc && \
   cd build-gcc && \
   ../gcc-${GCC_VER}/configure \
