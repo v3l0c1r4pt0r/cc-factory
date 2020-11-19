@@ -45,7 +45,7 @@ WORKDIR /home/admin/workspace
 
 # target platform
 ENV ARCH mips
-ENV TARGET mips-linux-uclibc
+ENV TARGET mips-linux-elf
 ENV SDK_ROOT /opt/${TARGET}
 
 # setup component versions
