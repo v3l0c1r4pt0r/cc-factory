@@ -18,6 +18,8 @@ RUN apt-get update && \
     binutils gcc-3.4 make gawk texinfo file m4 patch \
     # for bzip2 extraction
     bzip2 \
+    # for binutils compilation
+    flex \
     # for pulling sources
     wget ca-certificates
 
