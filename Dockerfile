@@ -136,6 +136,8 @@ RUN mkdir -p build-gcc && \
   ../gcc-${GCC_VER}/configure \
     --prefix=${SDK_ROOT} \
     --target=${TARGET} \
+    --with-gnu-as \
+    --with-gnu-ar \
     --with-gmp=${SDK_ROOT} \
     --with-mpfr=${SDK_ROOT} \
     --with-mpc=${SDK_ROOT} \
