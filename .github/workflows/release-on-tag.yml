@@ -57,3 +57,18 @@ jobs:
           docker tag ${IMAGE}:${IMAGE_VERSION} ccfactory/${IMAGE}:${IMAGE_VERSION}
           docker push ccfactory/${IMAGE}:${IMAGE_VERSION}
           docker logout
+      - name: Draft new Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # automatic secret
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: |
+            New features:
+            - elaborate
+            Fixed:
+            - a bugfix
+          draft: true
+          prerelease: false
