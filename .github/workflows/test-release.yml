@@ -1,0 +1,12 @@
+name: Test drafted release
+on:
+  release:
+    types: [unpublished]
+jobs:
+  use:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download released SDK
+        run: |
+          exit 0
