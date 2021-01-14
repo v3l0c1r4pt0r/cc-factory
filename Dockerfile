@@ -29,8 +29,8 @@ RUN mkdir /home/admin/workspace
 WORKDIR /home/admin/workspace
 
 # target platform
-ENV ARCH x86_64
-ENV TARGET x86_64-linux-uclibc
+ENV ARCH mips
+ENV TARGET mipsel-linux-uclibc
 ENV SDK_ROOT /opt/${TARGET}
 
 # setup component versions
