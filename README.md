@@ -16,6 +16,15 @@ decently in providing latest compilers for any architecture one would like.
 
 ## Usage
 
+### Ready-to-use SDK pacakge
+
+Most of users should prefer downloading precompiled toolchain. They are all
+available in [Releases](https://github.com/v3l0c1r4pt0r/cc-factory/releases)
+page. After downloading package of your choice, refer to [Installing
+SDK](#installing-sdk) section.
+
+### Compiling from source
+
 1. Select desired target from [Table of contents](#table-of-contents)
 2. Checkout to target's branch: `git checkout <branch-name>`
 3. Make sure Docker is running and you have access to Docker daemon
@@ -27,7 +36,7 @@ decently in providing latest compilers for any architecture one would like.
 8. If you prefer to run toolchain on your own system, type: `make sdk`
 9. `outdir` directory should appear, with tarball inside
 
-## Installing SDK
+### Installing SDK
 
 If you decided to export SDK outside container, its installation is as simple as
 unpacking the package to `/`:
