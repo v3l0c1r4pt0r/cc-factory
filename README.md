@@ -51,6 +51,7 @@ Platform | CC         | OS            | LIBC          | branch
 ---------|------------|---------------|---------------|-------------------------------------------
 MIPS     | gcc 4.6.4  | Linux 4.1.38  | uClibc 1.0.12 | `mips-gcc4.6.4-linux4.1.38-uclibc1.0.12`
 MIPSEL   | gcc 4.6.4  | Linux 3.4.113 | uClibc 1.0.26 | `mipsel-gcc4.6.4-linux3.4.113-uclibc1.0.26`
+MIPSEL   | gcc 10.2.0 | Linux 5.9.13  | uClibc 1.0.36 | `mipsel-gcc10.2.0-linux5.9.13-uclibc1.0.36`
 x86_64   | gcc 10.2.0 | Linux 5.9.13  | uClibc 1.0.36 | `x86_64-gcc10.2.0-linux5.9.13-uclibc1.0.36`
 
 ## In progress (help wanted!)
